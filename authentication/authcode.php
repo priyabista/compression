@@ -21,10 +21,10 @@ if(isset($_POST['register_btn'])){
             $insert_query_run = mysqli_query($con,$insert_query);
             if($insert_query_run){
                 $_SESSION['message']="Regsitered Succesful";
-                header('location: ../includes/login.php');
+                header('location: ../login.php');
             }else{
                 $_SESSION['message'] = "Something went wrong";
-            header('location: ../includes/signup.php');
+            header('location: ../signup.php');
           
             }
     

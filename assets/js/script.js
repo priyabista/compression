@@ -18,10 +18,10 @@ function off(){
     document.getElementById("overlay").style.display="none";
 }
 
-function updatePort(){
-    document.getElementById("updateForm").style.display='block';
+// function updatePort(){
+//     document.getElementById("updateForm").style.display='block';
 
-}
+// }
 document.addEventListener('mouseup', function(e) {
     var container = document.getElementById('updateForm');
     if(!container.contains(e.target)){
@@ -29,9 +29,7 @@ document.addEventListener('mouseup', function(e) {
     }
    });
    
-function fileUpload(){
-    document.getElementById("fileUpload").style.display='block';
-}
+
 document.addEventListener('mouseup', function(e) {
     var container = document.getElementById('fileUpload');
     if(!container.contains(e.target)){
@@ -54,3 +52,5 @@ document.addEventListener('mouseup', function(e) {
        container.style.display = 'none';
     }
    });
+
+ 

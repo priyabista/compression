@@ -4,7 +4,7 @@ if(isset($_SESSION['auth_user'])){
   
     $userid = $_SESSION['auth_user']['id'];
 }else{
-    header('location:includes/login.php');
+    header('location:login.php');
 }
 include_once 'includes/overlay.php';
 include_once './includes/header.php'; 
@@ -32,9 +32,13 @@ include_once 'dbconfig/dbconfig.php';?>
                         <span><?=$item['portal_code']; ?></span>
                         <span class ="fw-bold">(<?=$item['portal_limit']; ?>)</span>
                         <div class="action d-flex justify-content-end">
-                        <i class="fa-solid fa-trash m-2" onclick="confirmDelete(),on()" value="<?=$item['p_id']?>" style="cursor:pointer;"></i>
-                        <i class="fa-solid fa-upload m-2" onclick="fileUpload(),on()" style="cursor:pointer;"></i>
-                        <i class="fa-sharp fa-solid fa-pen-to-square m-2" onclick="updatePort(),on()" style="cursor:pointer;"></i>
+                            <form action="">
+                                <input type="hidden" name="portal_id" value="<?=$item['p_id'];?>"/>
+                            <i class="fa-solid fa-trash m-2" onclick="confirmDelete(),on()" value="<?=$item['p_id']?>" style="cursor:pointer;" name="delete_btn"></i>
+
+                            </form>
+                        <i class="fa-solid fa-upload m-2" onclick="fUp(<?=$item['p_id'];?>),on()" style="cursor:pointer;" value="<?=$item['p_id']?>"></i>
+                        <i class="fa-sharp fa-solid fa-pen-to-square m-2" onclick="up(<?=$item['p_id'];?>)" style="cursor:pointer;" ></i>
                         </div>
                      </div>
                     </div>
@@ -48,5 +52,21 @@ include_once 'dbconfig/dbconfig.php';?>
       
     </div>
 </div>
+<script>
+    function up(id){
+       document.getElementById('updateForm').style.display = 'block';
+       var inputField = document.querySelector('#valueField');
+   
+       inputField.value = id;
+     
+    }
+
+    function fUp(id){
+    document.getElementById("fileUpload").style.display='block';
+    var inputField = document.querySelector('#fileUploadValue');
+   
+    inputField.value = id;
+}
+</script>
 <?php include_once './includes/footer.php'; ?>
     

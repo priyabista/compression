@@ -16,17 +16,19 @@
 </div>
 
 <div class="updateform position-absolute top-50 start-50 translate-middle p-3 bg-white text-dark col-md-3 border border-secondary"  style="z-index:2;display:none;" id="updateForm">
-<form action="authentication/actionCode.php" method="POST">
+<form action="authentication/actionCode.php" method="POST" id="myForm">
         <h6 class="text-secondary text-center p-2">Update Portal</h6>
         <hr>
+        <input type="hidden" id="valueField" name="valueField"  value=""/>
+      
         <div class="form-control mt-4">
             <label for="">Portal Name</label>
-            <input type="text" name="updateportalname" id="" class="form-control">
+            <input type="text" name="updateportalname" id="nameField" class="form-control" value="">
         </div>
 
         <div class="form-control mt-4">
             <label for="">Set a limiter</label>
-            <input type="number" name="numlimiter" id="" class="form-control">
+            <input type="number" name="numlimiter" id="limitField" class="form-control" value="">
         </div>
         <input type="submit" value="Update" name="submit" class="mt-5 btn btn-primary col-md-12">
     </form>
@@ -36,6 +38,7 @@
 <form action="authentication/actionCode.php" method="POST" enctype="multipart/form-data" >
         <h6 class="text-secondary text-center p-2">File Upload</h6>
         <hr>
+        <input type="hidden" id="fileUploadValue" name="valueField"  value=""/>
         <div class="form-control mt-4">
             <label for="">Full Name</label>
             <input type="text" name="fullname" id="" class="form-control">
@@ -72,6 +75,3 @@
   </div>
 </div>
 
-</div>
-<!-- <td><a href="<?php //echo "delete.php?id=".$res['product_no']; >Delete
-                ?>" </a></td>  -->

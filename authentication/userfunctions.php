@@ -1,6 +1,6 @@
 <?php 
 // session_start();
-include('../dbconfig/dbconfig.php');
+// include('dbconfig/dbconfig.php');
 
 function getAllActive($table){
     global $con;
