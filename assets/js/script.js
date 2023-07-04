@@ -37,15 +37,6 @@ document.addEventListener('mouseup', function(e) {
     }
    });
    
-
-function confirmDelete() {
-    document.getElementById("deleteItem").style.display='block';
-    
-    // var sqlQuery = "DELETE FROM portals  WHERE p_id = user_id";
-
-    
-}
-
 document.addEventListener('mouseup', function(e) {
     var container = document.getElementById('deleteItem');
     if(!container.contains(e.target)){

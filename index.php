@@ -23,6 +23,7 @@ include_once 'dbconfig/dbconfig.php';?>
             if(mysqli_num_rows($query_run) > 0){
                 foreach($query_run as $item){?>
                 <div class="col-md-12">
+                    <a href="download.php?p_id=<?= $item['p_id']; ?>" style="text-decoration:none;" class="text-dark">
                     <div class="card shadow">
                     
                     
@@ -31,17 +32,18 @@ include_once 'dbconfig/dbconfig.php';?>
 
                         <span><?=$item['portal_code']; ?></span>
                         <span class ="fw-bold">(<?=$item['portal_limit']; ?>)</span>
+                        </a>
                         <div class="action d-flex justify-content-end">
-                            <form action="">
-                                <input type="hidden" name="portal_id" value="<?=$item['p_id'];?>"/>
-                            <i class="fa-solid fa-trash m-2" onclick="confirmDelete(),on()" value="<?=$item['p_id']?>" style="cursor:pointer;" name="delete_btn"></i>
+                            
+                            <i class="fa-solid fa-trash m-2" onclick="conDelete(<?=$item['p_id'];?>),on()" value="<?=$item['p_id']?>" style="cursor:pointer;" name="delete_btn"></i>
 
-                            </form>
+                            
                         <i class="fa-solid fa-upload m-2" onclick="fUp(<?=$item['p_id'];?>),on()" style="cursor:pointer;" value="<?=$item['p_id']?>"></i>
                         <i class="fa-sharp fa-solid fa-pen-to-square m-2" onclick="up(<?=$item['p_id'];?>)" style="cursor:pointer;" ></i>
                         </div>
                      </div>
                     </div>
+                    
                 </div>
               <?php  }
             }
@@ -53,11 +55,17 @@ include_once 'dbconfig/dbconfig.php';?>
     </div>
 </div>
 <script>
+    function conDelete(id){
+        document.getElementById("deleteItem").style.display='block';
+        var inputField= document.querySelector('#deleteValue');
+        inputField.value = id;
+    }
     function up(id){
        document.getElementById('updateForm').style.display = 'block';
        var inputField = document.querySelector('#valueField');
    
        inputField.value = id;
+    
      
     }
 

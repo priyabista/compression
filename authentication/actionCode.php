@@ -20,6 +20,9 @@ else{
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $p_id = $_POST['p_id'];
+    $userid =  $_SESSION['auth_user']['id'];
+
     $fullname = $_POST['fullname'];
     $uploadDir = "uploads/"; 
     $filename = $_FILES["file"]["name"];
@@ -37,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $encodedData = encodeWithHuffman($fileContents);
  
         // Store the encoded data in the database
-        $sql = "INSERT INTO file_upload (fullname, filename, filepath, filesize, encoded_data) VALUES ('$fullname', '$filename', '$filepath', $filesize, '$filepath')";
+        $sql = "INSERT INTO file_upload (fullname, filename, filepath, filesize, encoded_data,p_id,userid) VALUES ('$fullname', '$filename', '$filepath', $filesize, '$filepath','$p_id','$userid')";
         $con->query($sql);
         $con->close();
 
