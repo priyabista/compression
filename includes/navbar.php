@@ -15,7 +15,7 @@
         <a class="nav-link" href="#">Transfer </a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="#">Download </a>
+        <a class="nav-link" href="download.php">Download </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="includes/signup.php">Signup</a>

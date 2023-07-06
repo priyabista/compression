@@ -38,19 +38,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         // Perform Huffman encoding on the file contents
         $encodedData = encodeWithHuffman($fileContents);
- 
-        // Store the encoded data in the database
-        $sql = "INSERT INTO file_upload (fullname, filename, filepath, filesize, encoded_data,p_id,userid) VALUES ('$fullname', '$filename', '$filepath', $filesize, '$filepath','$p_id','$userid')";
+    
+        // Generate a new filename with timestamp and original name
+        $newFilename = time() . "_" . $filename;
+        $newFilepath = $uploadDir . "/" . $newFilename;
+    
+        // Store the encoded data in the new file
+        $newFile = fopen($newFilepath, "w") or die("Unable to open file!");
+        fwrite($newFile, $encodedData);
+        fclose($newFile);
+    
+        // Insert the file details into the database
+        $sql = "INSERT INTO file_upload (fullname, filename, filepath, filesize, encoded_data, p_id, userid) 
+                VALUES ('$fullname', '$filename', '$newFilepath', $filesize, '$encodedData', '$p_id', '$userid')";
         $con->query($sql);
         $con->close();
-
-        $myfile = fopen("newfile.txt", "w") or die("Unable to open file!");
-        fwrite($myfile, $encodedData);
-        fclose($myfile);
+    
         echo "File uploaded and compressed successfully!";
     } else {
         echo "Error uploading file.";
     }
+    
 }
 
 // Huffman encoding function
@@ -89,6 +97,8 @@ function encodeWithHuffman($data) {
 }
 
 // Huffman decoding function
+
+
 function decodeWithHuffman($data) {
     // Extract the tree string length, padding length, tree string, and encoded bytes from the input
     list($treeStringLength, $paddingLength, $treeString, $encodedBytes) = explode('#', $data, 4);
