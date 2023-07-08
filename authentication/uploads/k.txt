@@ -4,8 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,62 +35,106 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-
+    EditText userInputTv;
     TextView titleTv;
     TextView descTv;
     TextView authorTv;
     ImageView imageView;
+
+
+    RecyclerView recyclerView;
+    RecyclerViewAdapter adapter;
+    private ProgressDialog progressDialog;
+    private Handler delayHandler;
+    private Runnable delayRunnable;
+    private static final long DELAY_DURATION = 1000;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.setCancelable(false);
 
-        ArrayList<MyDataModel> tasks = new ArrayList<MyDataModel>();
-//      tasks.add(new MyDataModel("Wake up at 8am", "Hello", "i am dil","https://static.inshorts.com/inshorts/images/v1/variants/jpg/m/2023/05_may/19_fri/img_1684514033032_193.jpg?"));
-//        tasks.add(new MyDataModel("Wake up at 8am", "Hello", "i am bill","https://static.inshorts.com/inshorts/images/v1/variants/jpg/m/2023/05_may/19_fri/img_1684514033032_193.jpg?"));
+        recyclerView = findViewById(R.id.recyclerView);
 
+        ArrayList<MyDataModel> tasks = new ArrayList<>();
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-
         recyclerView.setLayoutManager(layoutManager);
 
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, tasks);
+        adapter = new RecyclerViewAdapter(this, tasks);
         recyclerView.setAdapter(adapter);
 
+        userInputTv = findViewById(R.id.search);
 
-        String apiUrl = "https://inshorts.deta.dev/news?category=science";
+        delayHandler = new Handler(Looper.getMainLooper());
+        delayRunnable = new Runnable() {
+            @Override
+            public void run() {
+                fetchData();
+            }
+        };
 
+        userInputTv.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Cancel any pending delayed execution
+                delayHandler.removeCallbacks(delayRunnable);
+            }
+
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String userInput = s.toString().trim();
+                if (!userInput.isEmpty()) {
+
+                    delayHandler.postDelayed(delayRunnable, DELAY_DURATION);
+                }
+            }
+        });
+    }
+
+    public void fetchData() {
+        String userInput = userInputTv.getText().toString().trim();
+        String apiUrl = "https://inshorts.deta.dev/news?category=" + userInput;
+
+        progressDialog.show();
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, apiUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                progressDialog.dismiss();
                 String jsonData = response;
                 Log.d("JSON DATA: ", jsonData);
-
-
-                jsonArrayDecode(jsonData, adapter);
+                jsonArrayDecode(jsonData);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                progressDialog.dismiss();
+                Toast.makeText(MainActivity.this, "Error fetching data", Toast.LENGTH_SHORT).show();
             }
-        }) {
+        });
 
-        };
         requestQueue.add(stringRequest);
     }
 
-    public void jsonArrayDecode(String jsonData, RecyclerViewAdapter adapter) {
+    public void jsonArrayDecode(String jsonData) {
         ArrayList<MyDataModel> data = new ArrayList<MyDataModel>();
         try {
             JSONObject jsonObject = new JSONObject(jsonData);
-
             JSONArray posts = jsonObject.getJSONArray("data");
 
             for (int i = 0; i < posts.length(); i++) {

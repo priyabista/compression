@@ -8,8 +8,9 @@ if(isset($_POST['portalname'])){
     $portal_limiter = $_POST['numlimiter'];
 if(isset($_SESSION['auth_user'])){
     $userid = $_SESSION['auth_user']['id'];
-    mysqli_query($con,"INSERT INTO `portals`( `portal_name`, `portal_limit`, `portal_code`,`userid`) VALUES ('$portal_name','$portal_limiter','$portal_code','$userid')");
+
     header('location:../index.php');
+    exit();
 }
 else{
     echo "Session not set";
@@ -41,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
         // Generate a new filename with timestamp and original name
         $newFilename = time() . "_" . $filename;
-        $newFilepath = $uploadDir . "/" . $newFilename;
+        $newFilepath = $uploadDir . $newFilename;
     
         // Store the encoded data in the new file
         $newFile = fopen($newFilepath, "w") or die("Unable to open file!");
@@ -50,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
         // Insert the file details into the database
         $sql = "INSERT INTO file_upload (fullname, filename, filepath, filesize, encoded_data, p_id, userid) 
-                VALUES ('$fullname', '$filename', '$newFilepath', $filesize, '$encodedData', '$p_id', '$userid')";
+                VALUES ('$fullname', '$filename', '$newFilepath', $filesize, '$newFilepath', '$p_id', '$userid')";
         $con->query($sql);
         $con->close();
     
@@ -160,20 +161,25 @@ function generateHuffmanCodes($tree) {
 }
 
 function generateCodes($node, $code, &$codes) {
-    if (is_string($node[1])) {
+    if (isset($node[1]) && is_string($node[1])) {
         $codes[$node[1]] = $code;
+    } elseif (isset($node[1]) && is_array($node[1])) {
+        generateCodes($node[1][0] ?? null, $code . '0', $codes);
+        generateCodes($node[1][1] ?? null, $code . '1', $codes);
     } else {
-        generateCodes($node[1][0], $code . '0', $codes);
-        generateCodes($node[1][1], $code . '1', $codes);
+        // Handle characters without codes (optional)
+        $codes[$node[1]] = ''; // Assign an empty code or a default value as needed
     }
 }
 
 // Create a string representation of the Huffman tree
 function makeTreeString($node) {
-    if (is_string($node[1])) {
+    if (isset($node[1]) && is_string($node[1])) {
         return "'" . $node[1];
+    } elseif (isset($node[1]) && is_array($node[1])) {
+        return '0' . makeTreeString($node[1][0] ?? null) . '1' . makeTreeString($node[1][1] ?? null);
     }
-    return '0' . makeTreeString($node[1][0]) . '1' . makeTreeString($node[1][1]);
+    return '';
 }
 
 // Build the Huffman tree from a string representation
