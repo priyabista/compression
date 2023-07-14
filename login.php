@@ -1,11 +1,9 @@
-<?php
-session_start();
-?>
+
 
 
 <?php
 include_once 'includes/header.php';
-include_once 'authentication/userfunctions.php';
+
 include 'dbconfig/dbconfig.php';
 ?>
 
@@ -15,7 +13,7 @@ include 'dbconfig/dbconfig.php';
      <h6 class="text-center text-secondary p-2">Login </h6>
      <hr>
       
-       <form action="authentication/authcode.php" method="POST">
+       <form action="function/authcode.php" method="POST">
          <div class="form-group mt-4">
           <label for="">Email</label>
          <input type="email" name="email" class="form-control " placeholder="eg:example@gmail.com">

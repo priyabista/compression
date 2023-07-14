@@ -1,7 +1,0 @@
-1.python -m venv env
-virtualenv env // fro linux and mac
-
-2. env\Scripts\activate
-3. pip install diango
-4. django-admin startproject projecr_accounts
-5.pyhton manage.py startapp app_accounts

@@ -1,1 +1,0 @@
-LAB  Downloading, installing and configurin g tomcat server locally. Also created a first java web application.

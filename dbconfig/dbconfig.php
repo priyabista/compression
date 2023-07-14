@@ -3,7 +3,7 @@
 $host = "localhost";
 $username = "root";
 $password = "";
-$database = "compression";
+$database = "file_compression";
 
 // creating bd connection
 $con = mysqli_connect($host, $username, $password, $database);
