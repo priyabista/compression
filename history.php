@@ -21,6 +21,7 @@ $userid = $_SESSION['auth_user']['id'];
 
       <th scope="col" class="text-center">Status</th>
       <th scope="col" class="text-center">Date</th>
+      <th scope="col" class="text-center">Delete</th>
     </tr>
   </thead>
   <tbody>
@@ -36,6 +37,8 @@ $userid = $_SESSION['auth_user']['id'];
 
                 <td class="<?=$item['status']=="COMPRESSED" ?'text-success':'text-danger'; ?> text-center "><?=$item['status']; ?></td>
                 <td class="text-center"><?=$item['date'];?></td>
+                <td class="text-center"><a href="<?php echo "delete.php?id=".$item['id']; 
+                ?>" style="color: white; background-color: #f44336; text-decoration:none; padding: 6px;">Delete</td>
                 </tr>
      <?php   }
     }

@@ -3,6 +3,7 @@ include_once '../dbconfig/dbconfig.php';
 $value = $_POST['value'];
 $sessionId = $_POST['sessionId'];
 $file_size = $_POST['original_size'];
+// $compression_ratio = $_POST['compression_ratio'];
 
 $fileName =  basename($value);
 

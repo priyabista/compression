@@ -222,6 +222,10 @@ class Codec {
 		let final_string = ts_length.toString() + '#' + padding_length.toString() + '#' + tree_string + encoded_data;
 		let output_message = "Compression complete and file sent for download. " + '\n' + "Compression Ratio : " + (data.length / final_string.length).toPrecision(6);
 		return [final_string, output_message];
+		
+          
+
+		
 	}
 
 	/// decoder function
@@ -385,7 +389,8 @@ window.onload = function () {
 			data: {
 			  value: uploadedFile['name'],
 			  sessionId: session_id,
-			  original_size: uploadedFile['size']
+			  original_size: uploadedFile['size'] 
+			  
 			},
 			success: function(response) {
 			  console.log(response);
